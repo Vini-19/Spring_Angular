@@ -1,0 +1,34 @@
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { UsuarioDto } from '../models/usuario-dto';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UsuarioService {
+
+  private apiURL = `${environment.apiUrl}/demoAPI/usuarios`
+
+  constructor(private http: HttpClient){}
+
+  obtenerUsuarios(){
+    return this.http.get<UsuarioDto[]>(this.apiURL);
+  }
+
+  obtenerPorId(id : number){
+    return this.http.get<UsuarioDto[]>(`${this.apiURL}/${id}`);
+  }
+
+  buscar(nombre?: string, apellido? : string){
+    let params: any = {};
+    if(nombre){
+      params.nombre = nombre;
+    }
+    if(apellido){
+      params.apellido = apellido;
+    }
+    return this.http.get<UsuarioDto[]>(`${this.apiURL}/buscar`, {params});
+  }
+  
+}
