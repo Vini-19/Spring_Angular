@@ -13,11 +13,11 @@ export class UsuarioService {
   constructor(private http: HttpClient){}
 
   obtenerUsuarios(){
-    return this.http.get<UsuarioDto[]>(this.apiURL);
+    return this.http.get<UsuarioDto[]>(`${this.apiURL}/Usuarios`);
   }
 
   obtenerPorId(id : number){
-    return this.http.get<UsuarioDto[]>(`${this.apiURL}/${id}`);
+    return this.http.get<UsuarioDto>(`${this.apiURL}/${id}`);
   }
 
   buscar(nombre?: string, apellido? : string){

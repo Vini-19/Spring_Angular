@@ -1,6 +1,8 @@
 <h2>Usuarios</h2>
+<p>Cantidad: {{ usuarios.length }}</p>
+
 <ul>
-    <li *ngFor="let u of usuarios">
-        {{u.nombre}} {{u.apellido}}
-    </li>
+  <li *ngFor="let u of usuarios">
+    {{ u.nombre }} {{ u.apellido }}
+  </li>
 </ul>

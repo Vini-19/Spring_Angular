@@ -1,1 +1,16 @@
-<p>login works!</p>
+<h2>Login</h2>
+<div>
+    <label>Nombre</label>
+    <input type="text" [(ngModel)] = "nombre" >
+</div>
+
+<div>
+    <label>Contraseña</label>
+    <input type="password" [(ngModel)] = "password" >
+</div>
+
+<button (click)="login()">Ingresar</button>
+
+@if(error){
+    <p>{{error}}</p>
+}
