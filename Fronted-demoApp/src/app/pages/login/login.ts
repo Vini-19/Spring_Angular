@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -18,10 +19,15 @@ export class Login {
   /**
    *
    */
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private toastr : ToastrService) {}
 
   login(): void{
-    this.error = "";
+    
+    if(!this.nombre || !this.password){
+      this.toastr.warning('Ingrese usuario y contraseña');
+      return;
+    }
+
     const loginData ={
       nombre : this.nombre,
       password : this.password
@@ -32,14 +38,12 @@ export class Login {
         this.authService.guardarToken(response.token);
         this.authService.guardarNombre(response.nombre)
 
-        console.log('Login Correcto');
-        console.log('Token:', response.token);
+        this.toastr.success('Bienvenido '+ response.nombre);
         
-        this.router.navigate(['/usuarios']);
+        this.router.navigate(['/home']);
       },
       error : (err) => {
-        console.error(err);
-        this.error = err.error || 'Error al iniciar';
+        this.toastr.error(err.error || 'Error al iniciar sesión')
       }
     })
   }
