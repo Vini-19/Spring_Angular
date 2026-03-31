@@ -27,6 +27,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private UsuarioRepository usuarioRepository;
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getServletPath();
+        return path.equals("/demoAPI/usuarios/login")
+                || path.equals("/demoAPI/usuarios/refreshToken");
+    }
+
+    @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
@@ -39,23 +46,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authHeader.substring(7);
-        String nombre = jwtService.extractUsername(token);
+        try {
+            String token = authHeader.substring(7);
+            String nombre = jwtService.extractUsername(token);
 
-        if (nombre != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            Usuario usuario = usuarioRepository.findByNombre(nombre).orElse(null);
+            if (nombre != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                Usuario usuario = usuarioRepository.findByNombre(nombre).orElse(null);
 
-            if (usuario != null && jwtService.isTokenValid(token, usuario)) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                usuario,
-                                null,
-                                Collections.emptyList()
-                        );
+                if (usuario != null && jwtService.isTokenValid(token, usuario)) {
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    usuario,
+                                    null,
+                                    Collections.emptyList()
+                            );
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
+
+        } catch (Exception ex) {
+            // Token inválido o expirado, no autentica y deja continuar.
+            // Spring Security decidirá si responde 401 según la ruta protegida.
         }
 
         filterChain.doFilter(request, response);
