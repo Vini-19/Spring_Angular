@@ -12,40 +12,40 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './login.css',
 })
 export class Login {
-  nombre : string = "";
-  password : string = "";
+  nombre: string = "";
+  password: string = "";
   error: string = '';
 
   /**
    *
    */
-  constructor(private authService: AuthService, private router: Router, private toastr : ToastrService) {}
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) { }
 
-  login(): void{
-    
-    if(!this.nombre || !this.password){
+  login(): void {
+
+    if (!this.nombre || !this.password) {
       this.toastr.warning('Ingrese usuario y contraseña');
       return;
     }
 
-    const loginData ={
-      nombre : this.nombre,
-      password : this.password
+    const loginData = {
+      nombre: this.nombre,
+      password: this.password
     };
-    
+
     this.authService.login(loginData).subscribe({
       next: (response) => {
-        this.authService.guardarToken(response.token);
-        this.authService.guardarNombre(response.nombre)
+        this.authService.guardarToken(response.accessToken);
+        this.authService.guardarRefreshToken(response.refreshToken);
+        this.authService.guardarNombre(response.nombre);
 
-        this.toastr.success('Bienvenido '+ response.nombre);
-        
+        this.toastr.success('Bienvenido ' + response.nombre);
         this.router.navigate(['/home']);
       },
-      error : (err) => {
-        this.toastr.error(err.error || 'Error al iniciar sesión')
+      error: (err) => {
+        this.toastr.error(typeof err.error === 'string' ? err.error : 'Error al iniciar sesión');
       }
-    })
+    });
   }
 
 }

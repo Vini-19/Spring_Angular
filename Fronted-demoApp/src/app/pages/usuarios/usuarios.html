@@ -1,8 +1,28 @@
 <h2>Usuarios</h2>
 <p>Cantidad: {{ usuarios.length }}</p>
 
-<ul>
-  <li *ngFor="let u of usuarios">
-    {{ u.nombre }} {{ u.apellido }}
-  </li>
-</ul>
+<table class="table">
+  <thead>
+    <th>Id</th>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Estado</th>
+    <th>Acciones</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let u of usuarios">
+      <td>{{u.id}}</td>
+      <td>{{u.nombre}}</td>
+      <td>{{u.apellido}}</td>
+      <td>
+        <span class="badge" [ngClass]="u.estado ? 'bg-success' : 'bg-danger'">
+          {{ u.estado ? 'Activo' : 'Inactivo' }}
+        </span>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-danger">Desactivar</button>
+        <button class="btn btn-sm btn-primary">Editar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

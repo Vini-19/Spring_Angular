@@ -16,34 +16,49 @@ export class AuthService {
    */
   constructor(private http : HttpClient) {}
 
-  login(data: LoginRequest): Observable<LoginResponse>{
-    return this.http.post<LoginResponse>(`${this.apiURL}/login`,data);
-  }
+login(data: LoginRequest) {
+  return this.http.post<LoginResponse>(`${this.apiURL}/login`, data);
+}
 
-  guardarToken(token: string): void{
-    localStorage.setItem('token',token);
-  }
-  
-  obtenerToken(): string | null{
-    return localStorage.getItem('token');
-  }
+refreshToken() {
+  return this.http.post<{ accessToken: string }>(`${this.apiURL}/refreshToken`, {
+    refreshToken: this.obtenerRefreshToken()
+  });
+}
 
-  guardarNombre(nombre:string): void{
-    localStorage.setItem('nombre',nombre);
-  }
+guardarToken(token: string): void {
+  localStorage.setItem('token', token);
+}
 
-  obtenernombre(): string | null
-  {
-    return localStorage.getItem('nombre');
-  }
+obtenerToken(): string | null {
+  return localStorage.getItem('token');
+}
 
-  estaAutenticado(): boolean{
-    return !!this.obtenerToken();
-  }
+guardarRefreshToken(token: string): void {
+  localStorage.setItem('refreshToken', token);
+}
 
-  logout(): void{
-    localStorage.removeItem('token');
-    localStorage.removeItem('nombre');
-  }
+estaAutenticado(): boolean {
+  return !!localStorage.getItem('token');
+}
+
+
+obtenerRefreshToken(): string | null {
+  return localStorage.getItem('refreshToken');
+}
+
+guardarNombre(nombre: string): void {
+  localStorage.setItem('nombre', nombre);
+}
+
+obtenerNombre(): string | null {
+  return localStorage.getItem('nombre');
+}
+
+logout(): void {
+  localStorage.removeItem('token');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('nombre');
+}
   
 }
