@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { UsuarioDto } from '../models/usuario-dto';
+import { CrearUsuarioDto } from '../models/crearUsuarioDto';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +32,8 @@ export class UsuarioService {
     }
     return this.http.get<UsuarioDto[]>(`${this.apiURL}/buscar`, {params});
   }
-  
+
+  crearUsuario(dto: CrearUsuarioDto): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}/CrearUsuario`, dto);
+  }
 }

@@ -1,6 +1,11 @@
-<h2>Usuarios</h2>
-<p>Cantidad: {{ usuarios.length }}</p>
+<div class="container">
+  <h2>Usuarios</h2>
+  <p>Cantidad: {{ usuarios.length }}</p>
 
+  <div class="text-end">
+    <button class="btn btn-primary" (click)="abrirModal()">Agregar Usuario</button>
+  </div>
+</div>
 <table class="table">
   <thead>
     <th>Id</th>
@@ -26,3 +31,10 @@
     </tr>
   </tbody>
 </table>
+
+
+<app-usuarios-modal
+  *ngIf="mostrarModal"
+  (cerrar)="cerrarModal()"
+  (usuarioCreado)="recargarUsuarios()">
+</app-usuarios-modal>
