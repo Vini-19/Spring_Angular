@@ -6,6 +6,8 @@ import lombok.Data;
 public class CrearUsuarioDTO {
     
     private String nombre;
+    
+    private String apellido;
 
     private String password;
 

@@ -89,6 +89,7 @@ public class UsuarioService {
     public Usuario crearUsuario(CrearUsuarioDTO dto) {
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
+        usuario.setApellido(dto.getApellido());
         String passwordEncriptada = passwordEncoder.encode(dto.getPassword());
         usuario.setPassword(passwordEncriptada);
         usuario.setEstado(dto.isEstado());
