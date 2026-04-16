@@ -102,12 +102,12 @@ public class UsuarioController {
         return usuarioService.crearUsuario(dto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("editar/{id}")
     public Usuario editar(@PathVariable Long id, @RequestBody EditarUsuarioDTO dto) {
         return usuarioService.EditarUsuario(id, dto);
     }
 
-    @PatchMapping("/{id}/estado")
+    @PatchMapping("desactivar/{id}")
     public Usuario DesactivarUsuario(@PathVariable Long id, @RequestParam boolean estado) {
         return usuarioService.DesactivarUsuario(id, estado);
     }

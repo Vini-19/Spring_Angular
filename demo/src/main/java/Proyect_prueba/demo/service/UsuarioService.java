@@ -101,6 +101,8 @@ public class UsuarioService {
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         usuario.setNombre(dto.getNombre());
+        usuario.setApellido(dto.getApellido());
+        usuario.setEstado(dto.isEstado());
         // verificacion del la contrasena nueva para editar si es nueva para encriptar
         // si no seguira igual
         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
