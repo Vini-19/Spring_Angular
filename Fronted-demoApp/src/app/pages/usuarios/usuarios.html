@@ -25,8 +25,10 @@
         </span>
       </td>
       <td>
-        <button class="btn btn-sm btn-danger">Desactivar</button>
-        <button class="btn btn-sm btn-primary">Editar</button>
+        <button class="btn btn-sm " [ngClass]="u.estado ? 'btn-danger' : 'btn-success'" (click)="DesactivarUsuario(u)">
+          {{u.estado ? 'Desactivar' : 'Activar'}}
+        </button>
+        <button class="btn btn-sm btn-primary" (click)="abrirModalEdicion(u)">Editar</button>
       </td>
     </tr>
   </tbody>
@@ -35,6 +37,7 @@
 
 <app-usuarios-modal
   *ngIf="mostrarModal"
+  [usuarioEditar]="usuarioSeleccionado"
   (cerrar)="cerrarModal()"
   (usuarioCreado)="recargarUsuarios()">
 </app-usuarios-modal>
